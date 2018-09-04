@@ -1,0 +1,49 @@
+实验环境
+ 客户端虚拟机(1)                           存储集群虚拟机(3)
+ 1.nfp时间同步服务端                        nfp时间同步客户端
+   /etc/chrony.conf                        /etc/chrony.conf
+   allow 192.168.4.0/24                    server 192.168.4.50 iburst
+   local stratum 10
+ 2.yum源检查
+   /etc/yum.repos.d/dvd.repo
+   [dvd]
+   name=rhel7
+   baseurl=ftp://192.168.4.254/rhel7
+   enabled=1
+   gpgcheck=0
+
+   [MON]
+   name=cephmon
+   baseurl=ftp://192.168.4.254/ceph/rhceph-2.0-rhel-7-x86_64/MON/
+   enabled=1
+   gpgcheck=0
+
+   [OSD]
+   name=cephosd
+   baseurl=ftp://192.168.4.254/ceph/rhceph-2.0-rhel-7-x86_64/OSD/
+   enabled=1
+   gpgcheck=0
+
+   [TOOLS]
+   name=cephtools
+   baseurl=ftp://192.168.4.254/ceph/rhceph-2.0-rhel-7-x86_64/Tools/
+   enabled=1
+   gpgcheck=0
+ 3.ssh无密钥连接(HOSTNAME必须hosts文件主机别名一致)
+   /etc/hosts
+   192.168.4.50  client
+   192.168.4.51  node1
+   192.168.4.52  node2
+   192.168.4.53  node3
+   192.168.4.54  node4
+   192.168.4.55  node5
+   ssh-keygen
+   for i in {51..54} ;do ssh-copy-id 192.168.4.$i;done
+   for i in {51..54} ;do ssh 192.168.4.$i;done 
+ 4.准备磁盘
+
+部署集群
+ 部署主机node1
+ 1.yum -y install ceph-deploy
+   
+   
